@@ -49,7 +49,8 @@ public class WebSecurityConfiguration {
                                 .requestMatchers(basePath + createUser,
                                                 basePath + expenses + viewAllExpenses,
                                                 basePath + expenses + viewAllExpensesByEmployeeNameOrLastName,
-                                                basePath + expenses + updateStatus)
+                                                basePath + expenses + updateStatus,
+                                                basePath + listAllUsers)
                                 .hasAuthority("ROLE_".concat(Role.MANAGER.getValue()))
                                 .requestMatchers(expenses + createRequest)
                                 .hasAuthority("ROLE_".concat(Role.EMPLOYEE.getValue()))
