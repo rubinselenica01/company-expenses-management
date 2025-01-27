@@ -10,6 +10,7 @@ public abstract class PathConstants {
     public static final String createRequest = "/create";
     public static final String viewExpenseRequestById = "/{id}";
     public static final String viewAllExpenses = "/all";
+    public static final String viewAllExpensesByEmployeeId = "/{id}/all";
     public static final String viewAllExpensesByEmployeeNameOrLastName = viewAllExpenses + "/search";
     public static final String updateStatus = viewExpenseRequestById + "/status";
 }

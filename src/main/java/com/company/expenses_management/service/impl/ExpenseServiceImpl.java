@@ -3,6 +3,7 @@ package com.company.expenses_management.service.impl;
 import com.company.expenses_management.model.dto.ExpenseCreationDto;
 import com.company.expenses_management.model.dto.ExpenseDto;
 import com.company.expenses_management.model.entity.expense.Expense;
+import com.company.expenses_management.model.entity.user.Role;
 import com.company.expenses_management.model.entity.user.User;
 import com.company.expenses_management.model.mapper.ExpenseMapper;
 import com.company.expenses_management.repository.ExpenseRepository;
@@ -46,7 +47,8 @@ public class ExpenseServiceImpl implements ExpenseService {
     @Override
     public ExpenseDto viewExpenseById(UUID uuid) {
         Expense expense = expenseRepository.findById(uuid).get();
-        if (Objects.equals(SecurityUtils.getLoggedUserId(), expense.getEmployee().getId())){
+        User loggedUser = userRepository.findById(Objects.requireNonNull(SecurityUtils.getLoggedUserId())).get();
+        if (loggedUser.getId().equals(expense.getId()) || loggedUser.getRole().equals(Role.MANAGER)){
             return ExpenseMapper.toDto(expense);
         }
         throw new RuntimeException("Bad request");
@@ -64,10 +66,14 @@ public class ExpenseServiceImpl implements ExpenseService {
     @Override
     public List<ExpenseDto> listAllByUserId(UUID uuid) {
         log.info("Listing all the expenses for emplyee {}",uuid);
-        List<Expense> expenseEntities = expenseRepository.findAllById(uuid);
-        return expenseEntities.stream()
-                .map(ExpenseMapper::toDto)
-                .toList();
+        User loggedUser = userRepository.findById(Objects.requireNonNull(SecurityUtils.getLoggedUserId())).get();
+        if (loggedUser.getId().equals(uuid) || loggedUser.getRole().equals(Role.MANAGER)){
+            List<Expense> expenseEntities = expenseRepository.findAllById(uuid);
+            return expenseEntities.stream()
+                    .map(ExpenseMapper::toDto)
+                    .toList();
+        }
+        throw new RuntimeException("Bad request");
     }
 
     @Override

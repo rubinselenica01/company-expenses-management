@@ -45,7 +45,7 @@ public class WebSecurityConfiguration {
         return http
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
-                                .requestMatchers(basePath + userLogin).permitAll()
+                                .requestMatchers(basePath + userLogin, "/swagger-ui/**", "/v3/**").permitAll()
                                 .requestMatchers(basePath + createUser,
                                                 basePath + expenses + viewAllExpenses,
                                                 basePath + expenses + viewAllExpensesByEmployeeNameOrLastName,
