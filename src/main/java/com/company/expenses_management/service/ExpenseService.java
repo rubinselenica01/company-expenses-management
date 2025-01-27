@@ -2,7 +2,6 @@ package com.company.expenses_management.service;
 
 import com.company.expenses_management.model.dto.ExpenseCreationDto;
 import com.company.expenses_management.model.dto.ExpenseDto;
-import com.company.expenses_management.model.entity.expense.Expense;
 
 import java.util.List;
 import java.util.UUID;
@@ -11,5 +10,7 @@ public interface ExpenseService {
     boolean createExpenseRequest(ExpenseCreationDto e);
     ExpenseDto viewExpenseById(UUID uuid);
     List<ExpenseDto> listAll();
+    List<ExpenseDto> listAllByUserId(UUID uuid);
     List<ExpenseDto> findAllByFirstNameOrLastName(String text);
+    void updateApprovalStatus(UUID expenseId,boolean status);
 }

@@ -1,6 +1,7 @@
 package com.company.expenses_management.service.impl;
 
 import com.company.expenses_management.model.dto.UserCreationFormDto;
+import com.company.expenses_management.model.dto.UserDto;
 import com.company.expenses_management.model.entity.user.User;
 import com.company.expenses_management.model.mapper.UserMapper;
 import com.company.expenses_management.repository.UserRepository;
@@ -11,6 +12,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -24,10 +27,10 @@ public class UserServiceImpl implements UserService {
     public boolean createUser(UserCreationFormDto u) {
         String email = u.getEmail().trim();
         String phoneNumber = u.getPhoneNumber().trim();
-        if (userRepository.existsByEmail(email)){
+        if (userRepository.existsByEmail(email)) {
             log.error("Employee exists with this email");
             return false;
-        }else if (userRepository.existsByPhoneNumber(phoneNumber)){
+        } else if (userRepository.existsByPhoneNumber(phoneNumber)) {
             log.error("Employee exists with this phone number");
             return false;
         }
@@ -41,6 +44,13 @@ public class UserServiceImpl implements UserService {
     @Override
     public User findByEmail(String email) {
         return userRepository.findByEmail(email).get();
+    }
+
+    @Override
+    public List<UserDto> listAll() {
+        return userRepository.findAll().stream()
+                .map(UserMapper::toDto)
+                .toList();
     }
 
     @Override

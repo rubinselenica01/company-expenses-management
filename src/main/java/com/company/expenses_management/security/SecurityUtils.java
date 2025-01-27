@@ -9,12 +9,10 @@ public class SecurityUtils {
 
     public static UUID getLoggedUserId() {
         var authentication = SecurityContextHolder.getContext().getAuthentication();
-        //(JWTs) claims are pieces of information asserted about a subject
+
         if (authentication != null && authentication.getPrincipal() instanceof Jwt) {
-            // handle jwt profile
             return getLoggedUser();
         } else {
-            //handle null authentication
             return null;
         }
     }

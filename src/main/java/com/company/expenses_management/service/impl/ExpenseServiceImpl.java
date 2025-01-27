@@ -62,11 +62,26 @@ public class ExpenseServiceImpl implements ExpenseService {
     }
 
     @Override
+    public List<ExpenseDto> listAllByUserId(UUID uuid) {
+        log.info("Listing all the expenses for emplyee {}",uuid);
+        List<Expense> expenseEntities = expenseRepository.findAllById(uuid);
+        return expenseEntities.stream()
+                .map(ExpenseMapper::toDto)
+                .toList();
+    }
+
+    @Override
     public List<ExpenseDto> findAllByFirstNameOrLastName(String text) {
         log.debug("Listing all expenses by search text: {}", text);
         List<Expense> expenseEntities = expenseRepository.findExpensesByEmployeeFirstAndLastName(text);
         return expenseEntities.stream()
                 .map(ExpenseMapper::toDto)
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public void  updateApprovalStatus(UUID expenseId,boolean status) {
+        Expense expense = expenseRepository.findById(expenseId).get();
+        expense.setRefunded(status);
     }
 }

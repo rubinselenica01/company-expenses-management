@@ -13,14 +13,13 @@ public abstract class UserMapper {
 
     public static UserDto toDto(User user){
 
-        //Period exactAge = Period.between(user.getBirthday(), LocalDate.now());
-        Period exactAge = null;
+        Period exactAge = Period.between(user.getBirthday(), LocalDate.now());
         return UserDto.builder()
                 .id(user.getId())
                 .firstName(user.getFirstName())
                 .lastName(user.getLastName())
                 .gender(user.getGender().getValue())
-                //.age(exactAge.getYears())
+                .age(exactAge.getYears())
                 .age(1)
                 .email(user.getEmail())
                 .phoneNumber(user.getPhoneNumber())
@@ -32,8 +31,7 @@ public abstract class UserMapper {
                 .firstName(userCreationFormDto.getFirstName())
                 .lastName(userCreationFormDto.getLastName())
                 .gender(Gender.fromValue(userCreationFormDto.getGender()))
-                .birthday(userCreationFormDto.getBirthday().isEmpty() ? null : LocalDate.parse(userCreationFormDto.getBirthday()))
-                //.birthday(LocalDate.parse(userCreationFormDto.getBirthday()))
+                .birthday(LocalDate.parse(userCreationFormDto.getBirthday()))
                 .email(userCreationFormDto.getEmail())
                 .phoneNumber(userCreationFormDto.getPhoneNumber())
                 .role(Role.fromValue(userCreationFormDto.getRole()))

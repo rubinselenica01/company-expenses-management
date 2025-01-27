@@ -2,14 +2,12 @@ package com.company.expenses_management.controller;
 
 import com.company.expenses_management.model.dto.ExpenseCreationDto;
 import com.company.expenses_management.model.dto.ExpenseDto;
+import com.company.expenses_management.security.SecurityUtils;
 import com.company.expenses_management.service.ExpenseService;
-import com.company.expenses_management.utils.PathConstants;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.context.annotation.Role;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -46,12 +44,21 @@ public class ExpenseController {
         return ResponseEntity.ok(expenseService.listAll());
     }
 
+    @GetMapping()
+    public ResponseEntity<List<ExpenseDto>> viewAllExpensesByEmployeeId(){
+        return ResponseEntity.ok(expenseService.listAllByUserId(SecurityUtils.getLoggedUserId()));
+    }
 
     @GetMapping(viewAllExpensesByEmployeeNameOrLastName)
     public ResponseEntity<List<ExpenseDto>> viewAllExpensesByFirstAndLastName(@RequestParam String text){
         return ResponseEntity.ok(expenseService.findAllByFirstNameOrLastName(text));
     }
 
-    //krijo metoden per aprovimin apo jo te expenses
 
+    @GetMapping(updateStatus)
+    public ResponseEntity<Void> updateApprovalStatus(@PathVariable("id") UUID expenseId,
+                                                     @RequestParam boolean status){
+        expenseService.updateApprovalStatus(expenseId, status);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
 }
