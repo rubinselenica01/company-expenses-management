@@ -1,24 +1,27 @@
-package com.company.expenses_management.model.user;
+package com.company.expenses_management.model.entity.user;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.UUID;
 
-import static com.company.expenses_management.utils.Constants.*;
+import static com.company.expenses_management.utils.SQLConstants.*;
 
 
+@Builder
 @Entity
 @Table(name = USER_TABLE_NAME)
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
 @Setter
-public class User {
+public class User implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -36,7 +39,7 @@ public class User {
     private Gender gender;
 
     @Column(name = USER_BIRTHDAY_PROPERTY)
-    private LocalDateTime birthday;
+    private LocalDate birthday;
 
     @Column(name = USER_EMAIL_PROPERTY)
     private String email;
@@ -51,4 +54,16 @@ public class User {
     @Column(name = USER_ROLE_PROPERTY)
     private Role role;
 
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return Arrays.stream(this.role.name()
+                .split(","))
+                .map(SimpleGrantedAuthority::new)
+                .toList();
+    }
+
+    @Override
+    public String getUsername() {
+        return this.email;
+    }
 }

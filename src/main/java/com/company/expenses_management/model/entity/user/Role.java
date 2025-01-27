@@ -1,4 +1,4 @@
-package com.company.expenses_management.model.user;
+package com.company.expenses_management.model.entity.user;
 
 import lombok.Getter;
 

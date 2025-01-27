@@ -1,6 +1,5 @@
-package com.company.expenses_management.model.user;
+package com.company.expenses_management.model.entity.user;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 import java.util.Arrays;
