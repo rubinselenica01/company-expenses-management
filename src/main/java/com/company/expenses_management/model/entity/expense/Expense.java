@@ -22,7 +22,7 @@ public class Expense {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = EXPENSE_ID_PROPERTY)
+    @Column(name = ID_PROPERTY)
     private UUID id;
 
     @ManyToOne(fetch = FetchType.LAZY)
