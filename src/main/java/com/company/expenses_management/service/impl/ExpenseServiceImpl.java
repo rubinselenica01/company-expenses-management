@@ -3,6 +3,7 @@ package com.company.expenses_management.service.impl;
 import com.company.expenses_management.model.dto.ExpenseCreationDto;
 import com.company.expenses_management.model.dto.ExpenseDto;
 import com.company.expenses_management.model.entity.expense.Expense;
+import com.company.expenses_management.model.entity.expense.ExpenseStatus;
 import com.company.expenses_management.model.entity.user.Role;
 import com.company.expenses_management.model.entity.user.User;
 import com.company.expenses_management.model.mapper.ExpenseMapper;
@@ -38,7 +39,6 @@ public class ExpenseServiceImpl implements ExpenseService {
         User user = userRepository.findById(Objects.requireNonNull(SecurityUtils.getLoggedUserId())).get();
         Expense expenseEntity = ExpenseMapper.toEntity(e);
         expenseEntity.setEmployee(user);
-        expenseEntity.setRefunded(false);
         expenseEntity.setCreatedDate(LocalDate.now());
 
         log.info("Persisting into database expense");
@@ -88,9 +88,9 @@ public class ExpenseServiceImpl implements ExpenseService {
     }
 
     @Override
-    public void  updateApprovalStatus(UUID expenseId,boolean status) {
+    public void  updateApprovalStatus(UUID expenseId,String status) {
         Expense expense = expenseRepository.findById(expenseId).get();
-        expense.setRefunded(status);
+        expense.setStatus(ExpenseStatus.fromValue(status));
         expenseRepository.save(expense);
     }
 }

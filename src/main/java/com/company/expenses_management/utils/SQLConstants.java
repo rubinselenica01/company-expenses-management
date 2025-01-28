@@ -17,7 +17,7 @@ public abstract class SQLConstants {
     public static final String EXPENSE_EMPLOYEE_ID_PROPERTY = "employee_id";
     public static final String AMOUNT_TO_REFUND_PROPERTY = "amount_to_refund";
     public static final String EXPENSE_DESCRIPTION_PROPERTY = "expense_description";
-    public static final String REFUNDED_STATUS_PROPERTY = "refunded";
+    public static final String STATUS_PROPERTY = "status";
     public static final String REFUNDED_BY_PROPERTY = "refunded_by";
     public static final String CREATED_DATE_PROPERTY= "created_date";
     public static final String STATUS_UPDATED_DATE_PROPERTY = "status_updated_date";

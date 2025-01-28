@@ -66,7 +66,7 @@ public class ExpenseController {
     @GetMapping(updateStatus)
     @Operation(summary = "Manager only access : approve or decline request")
     public ResponseEntity<Void> updateApprovalStatus(@PathVariable("id") UUID expenseId,
-                                                     @RequestParam boolean status){
+                                                     @RequestParam String status){
         expenseService.updateApprovalStatus(expenseId, status);
         return new ResponseEntity<>(HttpStatus.OK);
     }

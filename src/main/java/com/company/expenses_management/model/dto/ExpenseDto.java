@@ -14,7 +14,7 @@ public class ExpenseDto {
     private String fullNameEmployee;
     private String expenseDescription;
     private Double amountToRefund;
-    private Boolean refunded;
+    private String status;
     private LocalDate createdDate;
     private LocalDate statusUpdatedDate;
 

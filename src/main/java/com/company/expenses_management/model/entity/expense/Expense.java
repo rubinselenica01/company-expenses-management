@@ -35,14 +35,15 @@ public class Expense {
     @Column(name = AMOUNT_TO_REFUND_PROPERTY)
     private Double amountToRefund;
 
-    @Column(name = REFUNDED_STATUS_PROPERTY)
-    private Boolean refunded;
+    @Enumerated(EnumType.STRING)
+    @Column(name = STATUS_PROPERTY)
+    private ExpenseStatus status;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = REFUNDED_BY_PROPERTY)
     private User refundedBy;
 
-    @Column(name = CREATED_DATE)
+    @Column(name = CREATED_DATE_PROPERTY)
     private LocalDate createdDate;
 
     @Column(name = STATUS_UPDATED_DATE_PROPERTY)
