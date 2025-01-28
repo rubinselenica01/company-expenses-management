@@ -14,6 +14,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
@@ -38,6 +39,7 @@ public class ExpenseServiceImpl implements ExpenseService {
         Expense expenseEntity = ExpenseMapper.toEntity(e);
         expenseEntity.setEmployee(user);
         expenseEntity.setRefunded(false);
+        expenseEntity.setCreatedDate(LocalDate.now());
 
         log.info("Persisting into database expense");
         expenseRepository.save(expenseEntity);
@@ -89,5 +91,6 @@ public class ExpenseServiceImpl implements ExpenseService {
     public void  updateApprovalStatus(UUID expenseId,boolean status) {
         Expense expense = expenseRepository.findById(expenseId).get();
         expense.setRefunded(status);
+        expenseRepository.save(expense);
     }
 }

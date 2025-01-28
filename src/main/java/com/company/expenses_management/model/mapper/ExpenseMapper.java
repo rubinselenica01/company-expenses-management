@@ -5,6 +5,8 @@ import com.company.expenses_management.model.dto.ExpenseDto;
 import com.company.expenses_management.model.entity.expense.Expense;
 import com.company.expenses_management.security.SecurityUtils;
 
+import java.time.LocalDate;
+
 public abstract class ExpenseMapper {
 
     public static Expense toEntity(ExpenseCreationDto expenseCreationDto){
@@ -24,6 +26,8 @@ public abstract class ExpenseMapper {
                 .expenseDescription(expense.getExpenseDescription())
                 .amountToRefund(expense.getAmountToRefund())
                 .refunded(expense.getRefunded())
+                .createdDate(expense.getCreatedDate())
+                .statusUpdatedDate(expense.getStatusUpdatedDate())
                 .build();
 
     }

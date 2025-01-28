@@ -2,6 +2,7 @@ package com.company.expenses_management.model.dto;
 
 import lombok.*;
 
+import java.time.LocalDate;
 import java.util.UUID;
 
 @Builder
@@ -14,5 +15,7 @@ public class ExpenseDto {
     private String expenseDescription;
     private Double amountToRefund;
     private Boolean refunded;
+    private LocalDate createdDate;
+    private LocalDate statusUpdatedDate;
 
 }

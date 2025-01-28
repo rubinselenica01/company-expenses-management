@@ -4,9 +4,12 @@ import com.company.expenses_management.model.entity.user.User;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.time.LocalDate;
+import java.util.Date;
 import java.util.UUID;
 
 import static com.company.expenses_management.utils.SQLConstants.*;
+import static org.springframework.data.jpa.domain.AbstractAuditable_.CREATED_DATE;
 
 @Builder
 @Entity
@@ -38,5 +41,11 @@ public class Expense {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = REFUNDED_BY_PROPERTY)
     private User refundedBy;
+
+    @Column(name = CREATED_DATE)
+    private LocalDate createdDate;
+
+    @Column(name = STATUS_UPDATED_DATE_PROPERTY)
+    private LocalDate statusUpdatedDate;
 
 }
