@@ -18,7 +18,7 @@ public interface ExpenseRepository extends JpaRepository<Expense, UUID> {
             "OR LOWER(u.lastName) LIKE LOWER(CONCAT('%',:text,'%')) ")
     List<Expense> findExpensesByEmployeeFirstAndLastName(String text);
 
-    List<Expense> findAllById(UUID uuid);
+    List<Expense> findAllByEmployeeId(UUID uuid);
 
 
     @Query("SELECT e.amountToRefund from Expense e " +

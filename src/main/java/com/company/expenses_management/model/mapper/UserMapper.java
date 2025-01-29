@@ -20,7 +20,6 @@ public abstract class UserMapper {
                 .lastName(user.getLastName())
                 .gender(user.getGender().getValue())
                 .age(exactAge.getYears())
-                .age(1)
                 .email(user.getEmail())
                 .phoneNumber(user.getPhoneNumber())
                 .build();

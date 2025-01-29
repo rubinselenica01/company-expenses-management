@@ -8,10 +8,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -26,14 +23,13 @@ public class ReportController {
 
     private final ReportService reportService;
 
-    @PostMapping(name = createReport)
+    @PostMapping(createReport)
     @Operation(summary = "Manager access only : can create reports")
-    public ResponseEntity<String> createReport(@RequestBody ReportRequestDto reportRequestDto){
-        reportService.saveReport(reportRequestDto);
-        return ResponseEntity.ok("Done");
+    public ResponseEntity<ReportResponseDto> createReport(@RequestBody ReportRequestDto reportRequestDto){
+        return ResponseEntity.ok(reportService.saveReport(reportRequestDto));
     }
 
-    @PostMapping(name = listAllReports)
+    @GetMapping(listAllReports)
     @Operation(summary = "Manager access only : can list all reports")
     public ResponseEntity<List<ReportResponseDto>> listAllReports(){
         return ResponseEntity.ok(reportService.listAll());

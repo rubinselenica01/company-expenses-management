@@ -1,5 +1,6 @@
 package com.company.expenses_management.security;
 
+import com.company.expenses_management.model.entity.user.Role;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.jwt.Jwt;
 
@@ -21,4 +22,10 @@ public class SecurityUtils {
         var authentication = (Jwt) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         return UUID.fromString(authentication.getClaim("sub"));
     }
+
+    public static Role getLoggedUserRole() {
+        var authentication = (Jwt) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        return Role.fromValue(authentication.getClaim("roles"));
+    }
+
 }

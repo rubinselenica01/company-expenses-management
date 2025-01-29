@@ -11,6 +11,5 @@ public interface ExpenseService {
     ExpenseDto viewExpenseById(UUID uuid);
     List<ExpenseDto> listAll();
     List<ExpenseDto> listAllByUserId(UUID uuid);
-    List<ExpenseDto> findAllByFirstNameOrLastName(String text);
     void updateApprovalStatus(UUID expenseId,String status);
 }

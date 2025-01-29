@@ -3,7 +3,9 @@ package com.company.expenses_management.controller;
 import com.company.expenses_management.model.dto.LoginRequestDto;
 import com.company.expenses_management.model.dto.UserCreationFormDto;
 import com.company.expenses_management.model.dto.UserDto;
+import com.company.expenses_management.model.entity.user.Role;
 import com.company.expenses_management.model.entity.user.User;
+import com.company.expenses_management.security.SecurityUtils;
 import com.company.expenses_management.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -25,6 +27,7 @@ import org.springframework.web.bind.annotation.*;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 import static com.company.expenses_management.utils.PathConstants.*;
@@ -51,6 +54,18 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Some credentials must exist in database!");
     }
 
+    @GetMapping("/user/{id}")
+    public ResponseEntity<UserDto> getProfile(@PathVariable("id") UUID id){
+        if (
+                SecurityUtils.getLoggedUserRole().getValue().equals("MANAGER")
+                ||
+                SecurityUtils.getLoggedUser().equals(id)
+        ){
+            return ResponseEntity.ok(userService.findById(id));
+        }
+        throw new RuntimeException("Can't load profile!");
+    }
+
     @GetMapping(listAllUsers)
     @Operation(summary = "Manager access only : can see all users")
     public ResponseEntity<List<UserDto>> listAllUsers(){
@@ -60,7 +75,6 @@ public class UserController {
     @PostMapping(userLogin)
     @Operation(summary = "Both roles access : login ")
     public String login(@RequestBody LoginRequestDto u){
-
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(u.getEmail(), u.getPassword()));
         User user = userService.findByEmail(u.getEmail());

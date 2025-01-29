@@ -56,14 +56,7 @@ public class ExpenseController {
         return ResponseEntity.ok(expenseService.listAllByUserId(id));
     }
 
-    @GetMapping(viewAllExpensesByEmployeeNameOrLastName)
-    @Operation(summary = "Manager only access : view all expenses searched with a string", description = "This query uses ilike so whatever you type will return a result.")
-    public ResponseEntity<List<ExpenseDto>> viewAllExpensesByFirstAndLastName(@RequestParam String text){
-        return ResponseEntity.ok(expenseService.findAllByFirstNameOrLastName(text));
-    }
-
-
-    @GetMapping(updateStatus)
+    @PostMapping(updateStatus)
     @Operation(summary = "Manager only access : approve or decline request")
     public ResponseEntity<Void> updateApprovalStatus(@PathVariable("id") UUID expenseId,
                                                      @RequestParam String status){

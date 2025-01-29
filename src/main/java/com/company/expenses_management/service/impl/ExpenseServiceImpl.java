@@ -13,6 +13,8 @@ import com.company.expenses_management.security.SecurityUtils;
 import com.company.expenses_management.service.ExpenseService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.tomcat.util.buf.UEncoder;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -49,11 +51,15 @@ public class ExpenseServiceImpl implements ExpenseService {
     @Override
     public ExpenseDto viewExpenseById(UUID uuid) {
         Expense expense = expenseRepository.findById(uuid).get();
-        User loggedUser = userRepository.findById(Objects.requireNonNull(SecurityUtils.getLoggedUserId())).get();
-        if (loggedUser.getId().equals(expense.getId()) || loggedUser.getRole().equals(Role.MANAGER)){
+        if (
+                SecurityUtils.getLoggedUserRole().getValue().equals("MANAGER")
+                        ||
+                        SecurityUtils.getLoggedUser().equals(expense.getEmployee().getId())
+        ){
             return ExpenseMapper.toDto(expense);
         }
-        throw new RuntimeException("Bad request");
+
+        throw new RuntimeException("Employee can't see other expenses than his");
     }
 
     @Override
@@ -70,7 +76,7 @@ public class ExpenseServiceImpl implements ExpenseService {
         log.info("Listing all the expenses for emplyee {}",uuid);
         User loggedUser = userRepository.findById(Objects.requireNonNull(SecurityUtils.getLoggedUserId())).get();
         if (loggedUser.getId().equals(uuid) || loggedUser.getRole().equals(Role.MANAGER)){
-            List<Expense> expenseEntities = expenseRepository.findAllById(uuid);
+            List<Expense> expenseEntities = expenseRepository.findAllByEmployeeId(uuid);
             return expenseEntities.stream()
                     .map(ExpenseMapper::toDto)
                     .toList();
@@ -79,18 +85,12 @@ public class ExpenseServiceImpl implements ExpenseService {
     }
 
     @Override
-    public List<ExpenseDto> findAllByFirstNameOrLastName(String text) {
-        log.debug("Listing all expenses by search text: {}", text);
-        List<Expense> expenseEntities = expenseRepository.findExpensesByEmployeeFirstAndLastName(text);
-        return expenseEntities.stream()
-                .map(ExpenseMapper::toDto)
-                .collect(Collectors.toList());
-    }
-
-    @Override
     public void  updateApprovalStatus(UUID expenseId,String status) {
+        User user = userRepository.findById(Objects.requireNonNull(SecurityUtils.getLoggedUserId())).get();
         Expense expense = expenseRepository.findById(expenseId).get();
         expense.setStatus(ExpenseStatus.fromValue(status));
+        expense.setRefundedBy(user);
+        expense.setStatusUpdatedDate(LocalDate.now());
         expenseRepository.save(expense);
     }
 }

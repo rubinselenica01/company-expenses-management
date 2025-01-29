@@ -26,6 +26,8 @@ import org.springframework.security.oauth2.server.resource.authentication.JwtGra
 import org.springframework.security.oauth2.server.resource.web.BearerTokenAuthenticationEntryPoint;
 import org.springframework.security.oauth2.server.resource.web.access.BearerTokenAccessDeniedHandler;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import javax.crypto.spec.SecretKeySpec;
 
@@ -53,7 +55,7 @@ public class WebSecurityConfiguration {
                                                 basePath + listAllUsers,
                                                 basePath + reportPath + "/**")
                                 .hasAuthority("ROLE_".concat(Role.MANAGER.getValue()))
-                                .requestMatchers(expenses + createRequest)
+                                .requestMatchers(basePath + expenses + createRequest)
                                 .hasAuthority("ROLE_".concat(Role.EMPLOYEE.getValue()))
                                 .anyRequest().authenticated()
                 )
