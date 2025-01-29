@@ -5,8 +5,8 @@ server:
 #Sql connector configuration
 spring:
   datasource:
-    username : usernameval
-    password : passval
+    username : rubin-selenica
+    password : leesinfromjungle71
     url : jdbc:mysql://localhost:3306/company_expenses
     driver-class-name: com.mysql.cj.jdbc.Driver
   jpa:
