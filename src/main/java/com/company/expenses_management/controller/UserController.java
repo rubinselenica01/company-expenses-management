@@ -32,7 +32,6 @@ import java.util.stream.Collectors;
 
 import static com.company.expenses_management.utils.PathConstants.*;
 
-@Tag(name = "User Controller")
 @Slf4j
 @RequiredArgsConstructor
 @RestController
@@ -45,7 +44,6 @@ public class UserController {
 
 
     @PostMapping(createUser)
-    @Operation(summary = "Manager access only : can create user employee")
     public ResponseEntity<String> createUser(@RequestBody UserCreationFormDto u){
         boolean isUserCreated = userService.createUser(u);
         if (isUserCreated){
@@ -54,7 +52,7 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Some credentials must exist in database!");
     }
 
-    @GetMapping("/user/{id}")
+    @GetMapping(getUserProfile)
     public ResponseEntity<UserDto> getProfile(@PathVariable("id") UUID id){
         if (
                 SecurityUtils.getLoggedUserRole().getValue().equals("MANAGER")
@@ -67,13 +65,11 @@ public class UserController {
     }
 
     @GetMapping(listAllUsers)
-    @Operation(summary = "Manager access only : can see all users")
     public ResponseEntity<List<UserDto>> listAllUsers(){
         return ResponseEntity.ok(userService.listAll());
     }
 
     @PostMapping(userLogin)
-    @Operation(summary = "Both roles access : login ")
     public String login(@RequestBody LoginRequestDto u){
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(u.getEmail(), u.getPassword()));

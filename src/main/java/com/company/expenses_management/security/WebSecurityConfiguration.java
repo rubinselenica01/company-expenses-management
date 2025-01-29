@@ -49,10 +49,9 @@ public class WebSecurityConfiguration {
                 .authorizeHttpRequests(auth -> auth
                                 .requestMatchers(basePath + userLogin, "/swagger-ui/**", "/v3/**").permitAll()
                                 .requestMatchers(basePath + createUser,
-                                                basePath + expenses + viewAllExpenses,
-                                                basePath + expenses + viewAllExpensesByEmployeeNameOrLastName,
-                                                basePath + expenses + updateStatus,
                                                 basePath + listAllUsers,
+                                                basePath + expenses + viewAllExpenses,
+                                                basePath + expenses + updateStatus,
                                                 basePath + reportPath + "/**")
                                 .hasAuthority("ROLE_".concat(Role.MANAGER.getValue()))
                                 .requestMatchers(basePath + expenses + createRequest)

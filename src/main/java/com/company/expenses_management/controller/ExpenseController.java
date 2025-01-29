@@ -17,7 +17,6 @@ import java.util.UUID;
 
 import static com.company.expenses_management.utils.PathConstants.*;
 
-@Tag(name = "Expenses Controller")
 @Slf4j
 @RequiredArgsConstructor
 @RestController
@@ -28,7 +27,6 @@ public class ExpenseController {
 
 
     @PostMapping(createRequest)
-    @Operation(summary = "Employee access only : can create expense request")
     public ResponseEntity<String> createExpenseRequest(@RequestBody ExpenseCreationDto expenseCreationDto){
         log.debug("Creating expense request");
         if (expenseService.createExpenseRequest(expenseCreationDto)){
@@ -38,26 +36,22 @@ public class ExpenseController {
     }
 
     @GetMapping(viewExpenseRequestById)
-    @Operation(summary = "Employee access only : can create expense request")
     public ResponseEntity<ExpenseDto> viewExpenseRequest(@PathVariable("id") UUID expenseId){
         ExpenseDto expenseDto = expenseService.viewExpenseById(expenseId);
         return ResponseEntity.ok(expenseDto);
     }
 
     @GetMapping(viewAllExpenses)
-    @Operation(summary = "Manager access only : can view all expenses")
     public ResponseEntity<List<ExpenseDto>> viewAllExpenses(){
         return ResponseEntity.ok(expenseService.listAll());
     }
 
     @GetMapping(viewAllExpensesByEmployeeId)
-    @Operation(summary = "Both roles access : can view all expenses", description = "The manager can see all expenses. The employee can see only his expenses.")
     public ResponseEntity<List<ExpenseDto>> viewAllExpensesByEmployeeId(@PathVariable("id")UUID id){
         return ResponseEntity.ok(expenseService.listAllByUserId(id));
     }
 
     @PostMapping(updateStatus)
-    @Operation(summary = "Manager only access : approve or decline request")
     public ResponseEntity<Void> updateApprovalStatus(@PathVariable("id") UUID expenseId,
                                                      @RequestParam String status){
         expenseService.updateApprovalStatus(expenseId, status);

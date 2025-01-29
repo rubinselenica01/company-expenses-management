@@ -14,7 +14,6 @@ import java.util.List;
 
 import static com.company.expenses_management.utils.PathConstants.*;
 
-@Tag(name = "Report Controller")
 @Slf4j
 @RequiredArgsConstructor
 @RestController
@@ -24,13 +23,11 @@ public class ReportController {
     private final ReportService reportService;
 
     @PostMapping(createReport)
-    @Operation(summary = "Manager access only : can create reports")
     public ResponseEntity<ReportResponseDto> createReport(@RequestBody ReportRequestDto reportRequestDto){
         return ResponseEntity.ok(reportService.saveReport(reportRequestDto));
     }
 
     @GetMapping(listAllReports)
-    @Operation(summary = "Manager access only : can list all reports")
     public ResponseEntity<List<ReportResponseDto>> listAllReports(){
         return ResponseEntity.ok(reportService.listAll());
     }
