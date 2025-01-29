@@ -1,6 +1,7 @@
 package com.company.expenses_management.controller;
 
 import com.company.expenses_management.model.dto.ReportRequestDto;
+import com.company.expenses_management.model.dto.ReportResponseDto;
 import com.company.expenses_management.service.ReportService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -11,6 +12,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
 
 import static com.company.expenses_management.utils.PathConstants.*;
 
@@ -24,10 +27,16 @@ public class ReportController {
     private final ReportService reportService;
 
     @PostMapping(name = createReport)
-    @Operation(summary = "Manager access onyl : can create reports")
+    @Operation(summary = "Manager access only : can create reports")
     public ResponseEntity<String> createReport(@RequestBody ReportRequestDto reportRequestDto){
         reportService.saveReport(reportRequestDto);
         return ResponseEntity.ok("Done");
+    }
+
+    @PostMapping(name = listAllReports)
+    @Operation(summary = "Manager access only : can list all reports")
+    public ResponseEntity<List<ReportResponseDto>> listAllReports(){
+        return ResponseEntity.ok(reportService.listAll());
     }
 
 

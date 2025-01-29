@@ -39,4 +39,11 @@ public class ReportServiceImpl implements ReportService {
         return ReportMapper.toDto(reportRepository.save(report));
     }
 
+    @Override
+    public List<ReportResponseDto> listAll() {
+        return reportRepository.findAll().stream()
+                .map(ReportMapper::toDto)
+                .toList();
+    }
+
 }

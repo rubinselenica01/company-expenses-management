@@ -15,4 +15,5 @@ public abstract class PathConstants {
     public static final String updateStatus = viewExpenseRequestById + "/status";
     public static final String reportPath = "/report";
     public static final String createReport = "/create";
+    public static final String listAllReports = "/all";
 }
